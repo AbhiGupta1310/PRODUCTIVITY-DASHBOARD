@@ -16,7 +16,7 @@ export const useWeather = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY; // This is a public demo key
+  const API_KEY = "1c624509f4165d6d100b9c3ea849eb89"; // This is a my api key
 
   const fetchWeather = useCallback(async (city) => {
     if (!city) return;
