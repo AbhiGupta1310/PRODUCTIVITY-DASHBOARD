@@ -8,14 +8,9 @@ const QuoteWidget = () => {
   const fetchQuote = async () => {
     setLoading(true);
     try {
-      // Add a unique query param to bust all caches
-      const timestamp = new Date().getTime();
-      const response = await fetch(
-        `https://api.quotable.io/random?ts=${timestamp}`,
-        {
-          cache: "no-store",
-        }
-      );
+      const response = await fetch("https://dummyjson.com/quotes", {
+        cache: "no-store",
+      });
 
       if (!response.ok) {
         throw new Error(`Failed with status: ${response.status}`);
@@ -23,9 +18,13 @@ const QuoteWidget = () => {
 
       const data = await response.json();
 
+      // ✅ Choose a random quote from the list
+      const randomIndex = Math.floor(Math.random() * data.quotes.length);
+      const randomQuote = data.quotes[randomIndex];
+
       setQuote({
-        content: data.content,
-        author: data.author,
+        content: randomQuote.quote,
+        author: randomQuote.author,
       });
     } catch (error) {
       console.error("Error fetching quote:", error);
@@ -62,7 +61,10 @@ const QuoteWidget = () => {
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center py-4">
+      <div
+        className="flex flex-1 flex-col items-center justify-center py-4"
+        aria-busy={loading}
+      >
         {loading ? (
           <div className="flex h-24 items-center justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-secondary-600"></div>
